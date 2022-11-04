@@ -1,3 +1,8 @@
+buildscript {
+    dependencies {
+        classpath("com.squareup.sqldelight:gradle-plugin:1.5.3")
+    }
+}
 plugins {
     id("com.android.application").version("7.3.1").apply(false)
     id("com.android.library").version("7.3.1").apply(false)

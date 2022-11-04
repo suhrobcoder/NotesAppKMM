@@ -17,8 +17,16 @@ addCategory:
 INSERT INTO CategoryEntity(title, color)
 VALUES (:title, :color);
 
+updateCategory:
+UPDATE CategoryEntity
+SET title = :title, color = :color
+WHERE id = :id;
+
 removeCategory:
 DELETE FROM CategoryEntity WHERE id = :id;
+
+getCategories:
+SELECT * FROM CategoryEntity;
 
 addNote:
 INSERT INTO NoteEntity(title, content, date, categoryId)

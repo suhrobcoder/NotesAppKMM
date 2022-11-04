@@ -17,8 +17,16 @@ class NoteDao(
         queries.addCategory(category.title, category.color)
     }
 
+    fun updateCategory(category: CategoryEntity) {
+        queries.updateCategory(category.title, category.color, category.id)
+    }
+
     fun removeCategory(category: CategoryEntity) {
         queries.removeCategory(category.id)
+    }
+
+    fun getCategories(): Flow<List<CategoryEntity>> {
+        return queries.getCategories().asFlow().mapToList()
     }
 
     fun addNote(note: NoteEntity) {

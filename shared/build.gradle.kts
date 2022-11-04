@@ -28,6 +28,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
+                implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
             }
         }
         val commonTest by getting {

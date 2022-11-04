@@ -1,0 +1,40 @@
+CREATE TABLE CategoryEntity(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    color TEXT NOT NULL
+);
+
+CREATE TABLE NoteEntity(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    date INTEGER NOT NULL,
+    categoryId INTEGER NOT NULL,
+    FOREIGN KEY (categoryId) REFERENCES CategoryEntity(id)
+);
+
+addCategory:
+INSERT INTO CategoryEntity(title, color)
+VALUES (:title, :color);
+
+removeCategory:
+DELETE FROM CategoryEntity WHERE id = :id;
+
+addNote:
+INSERT INTO NoteEntity(title, content, date, categoryId)
+VALUES (:title, :content, :date, :categoryId);
+
+updateNote:
+UPDATE NoteEntity
+SET title = :title, content = :content, categoryId = :categoryId
+WHERE id = :id;
+
+removeNote:
+DELETE FROM NoteEntity WHERE id = :id;
+
+getNotesWithCategory:
+SELECT NoteEntity.id, NoteEntity.title, NoteEntity.content, NoteEntity.date,
+CategoryEntity.id, CategoryEntity.title, CategoryEntity.color
+FROM NoteEntity
+LEFT JOIN CategoryEntity ON NoteEntity.categoryId = CategoryEntity.id
+ORDER BY NoteEntity.date DESC;

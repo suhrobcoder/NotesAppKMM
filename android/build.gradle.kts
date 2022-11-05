@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("com.google.devtools.ksp") version("1.7.10-1.0.6")
 }
 
 android {
@@ -29,6 +30,13 @@ android {
             isMinifyEnabled = false
         }
     }
+    applicationVariants.all {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -41,4 +49,8 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.material3:material3:1.0.0")
     implementation("androidx.activity:activity-compose:1.6.1")
+
+    val composeDestinationsVersion = "1.7.25-beta"
+    implementation("io.github.raamcosta.compose-destinations:core:$composeDestinationsVersion")
+    ksp("io.github.raamcosta.compose-destinations:ksp:$composeDestinationsVersion")
 }

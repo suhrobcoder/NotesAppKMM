@@ -29,7 +29,7 @@ kotlin {
             dependencies {
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
                 implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
             }
         }
         val commonTest by getting {

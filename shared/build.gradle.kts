@@ -3,10 +3,12 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("com.squareup.sqldelight")
+    id("kotlin-parcelize")
 }
 
 kotlin {
     val sqlDelightVersion = "1.5.3"
+    val decomposeVersion = "1.0.0-alpha-07"
 
     android()
     iosX64()
@@ -23,13 +25,14 @@ kotlin {
             baseName = "shared"
         }
     }
-    
+
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
                 implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                api("com.arkivanov.decompose:decompose:$decomposeVersion")
             }
         }
         val commonTest by getting {

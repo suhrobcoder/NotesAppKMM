@@ -6,30 +6,23 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.EmptyDestinationsNavigator
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import uz.suhrob.notesapp.android.ui.components.DateHeader
 import uz.suhrob.notesapp.android.ui.components.NoteCard
-import uz.suhrob.notesapp.android.ui.theme.NotesAppTheme
 import uz.suhrob.notesapp.domain.model.Category
 import uz.suhrob.notesapp.domain.model.Note
+import uz.suhrob.notesapp.presentation.notes.Notes
 import uz.suhrob.notesapp.util.parseColor
 import kotlin.random.Random
 
 @OptIn(ExperimentalFoundationApi::class)
-@RootNavGraph(start = true)
-@Destination
 @Composable
 fun NotesPage(
-    navigator: DestinationsNavigator,
+    component: Notes,
 ) {
     val testNotes = List(20) {
         Note(
@@ -61,13 +54,5 @@ fun NotesPage(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun NotesPage_Preview() {
-    NotesAppTheme {
-        NotesPage(navigator = EmptyDestinationsNavigator)
     }
 }

@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("com.google.devtools.ksp") version("1.7.10-1.0.6")
 }
 
 android {
@@ -50,7 +49,6 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.0.0")
     implementation("androidx.activity:activity-compose:1.6.1")
 
-    val composeDestinationsVersion = "1.7.25-beta"
-    implementation("io.github.raamcosta.compose-destinations:core:$composeDestinationsVersion")
-    ksp("io.github.raamcosta.compose-destinations:ksp:$composeDestinationsVersion")
+    val decomposeVersion = "1.0.0-alpha-07"
+    implementation("com.arkivanov.decompose:extensions-compose-jetpack:$decomposeVersion")
 }

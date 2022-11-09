@@ -50,7 +50,7 @@ fun NotesApp(component: Root) {
     Children(stack = childStack, animation = stackAnimation(slide())) {
         when (val child = it.instance) {
             is Root.Child.HomeChild -> HomePage(component = child.component)
-            is Root.Child.AddNoteChild -> AddNotePage()
+            is Root.Child.AddNoteChild -> AddNotePage(component = child.component)
         }
     }
 }

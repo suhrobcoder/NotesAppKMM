@@ -1,9 +1,13 @@
 package uz.suhrob.notesapp.android.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,7 +20,7 @@ import uz.suhrob.notesapp.android.ui.theme.NotesAppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> DropDownMenu(
-    value: T,
+    value: T?,
     options: List<T>,
     itemToText: (T) -> String,
     label: String,
@@ -25,18 +29,15 @@ fun <T> DropDownMenu(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val interactionsSource: MutableInteractionSource = remember { MutableInteractionSource() }
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
-        modifier = modifier,
-    ) {
+    val valueText = if (value != null) itemToText(value) else "Empty"
+    Box {
         BasicTextField(
             readOnly = true,
-            value = itemToText(value),
+            value = valueText,
             onValueChange = { },
             decorationBox = @Composable { innerTextField ->
                 TextFieldDefaults.TextFieldDecorationBox(
-                    value = itemToText(value),
+                    value = valueText,
                     visualTransformation = VisualTransformation.None,
                     enabled = true,
                     innerTextField = innerTextField,
@@ -51,11 +52,19 @@ fun <T> DropDownMenu(
                     contentPadding = PaddingValues(horizontal = 0.dp, vertical = 8.dp),
                     label = { Text(label) },
                     singleLine = true,
+                    trailingIcon = {
+                        IconButton(onClick = { expanded = !expanded }) {
+                            Icon(
+                                imageVector = Icons.Rounded.ArrowDropDown,
+                                contentDescription = null
+                            )
+                        }
+                    }
                 )
             },
             modifier = Modifier.fillMaxWidth(),
         )
-        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             options.forEach { option ->
                 DropdownMenuItem(
                     text = { Text(itemToText(option)) },

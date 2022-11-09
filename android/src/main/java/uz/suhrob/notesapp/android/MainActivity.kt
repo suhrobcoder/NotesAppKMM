@@ -13,6 +13,7 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import uz.suhrob.notesapp.android.ui.pages.add_note.AddNotePage
 import uz.suhrob.notesapp.android.ui.pages.home.HomePage
 import uz.suhrob.notesapp.android.ui.theme.NotesAppTheme
 import uz.suhrob.notesapp.presentation.root.Root
@@ -42,6 +43,7 @@ fun NotesApp(component: Root) {
     Children(stack = childStack, animation = stackAnimation(slide())) {
         when (val child = it.instance) {
             is Root.Child.HomeChild -> HomePage(component = child.component)
+            is Root.Child.AddNoteChild -> AddNotePage()
         }
     }
 }

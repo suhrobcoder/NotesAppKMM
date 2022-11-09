@@ -9,6 +9,7 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import uz.suhrob.notesapp.presentation.categories.CategoriesComponent
 import uz.suhrob.notesapp.presentation.notes.NotesComponent
 
 class HomeComponent(
@@ -28,6 +29,7 @@ class HomeComponent(
     override val currentTab: Value<Home.Tab> = childStack.map {
         when (it.active.instance) {
             is Home.Child.NotesChild -> Home.Tab.Notes
+            is Home.Child.CategoriesChild -> Home.Tab.Categories
         }
     }
 
@@ -35,6 +37,7 @@ class HomeComponent(
         navigation.bringToFront(
             when (tab) {
                 Home.Tab.Notes -> Config.Notes
+                Home.Tab.Categories -> Config.Categories
             }
         )
     }
@@ -42,11 +45,15 @@ class HomeComponent(
     private fun child(config: Config, componentContext: ComponentContext): Home.Child {
         return when (config) {
             Config.Notes -> Home.Child.NotesChild(NotesComponent())
+            Config.Categories -> Home.Child.CategoriesChild(CategoriesComponent())
         }
     }
 
     private sealed interface Config : Parcelable {
         @Parcelize
         object Notes : Config
+
+        @Parcelize
+        object Categories : Config
     }
 }

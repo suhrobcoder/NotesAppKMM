@@ -7,6 +7,8 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import uz.suhrob.notesapp.domain.model.Note
+import uz.suhrob.notesapp.presentation.add_note.AddNoteComponent
 import uz.suhrob.notesapp.presentation.home.HomeComponent
 
 class RootComponent(
@@ -26,11 +28,15 @@ class RootComponent(
     private fun child(config: Config, componentContext: ComponentContext): Root.Child {
         return when(config) {
             Config.Home -> Root.Child.HomeChild(HomeComponent(componentContext))
+            is Config.AddNote -> Root.Child.AddNoteChild(AddNoteComponent())
         }
     }
 
     private sealed interface Config : Parcelable {
         @Parcelize
         object Home : Config
+
+        @Parcelize
+        class AddNote(val note: Note?) : Config
     }
 }

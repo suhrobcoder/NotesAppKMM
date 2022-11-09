@@ -2,6 +2,7 @@ package uz.suhrob.notesapp.presentation.home
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import uz.suhrob.notesapp.presentation.categories.Categories
 import uz.suhrob.notesapp.presentation.notes.Notes
 
 interface Home {
@@ -12,9 +13,11 @@ interface Home {
 
     sealed interface Child {
         class NotesChild(val component: Notes) : Child
+        class CategoriesChild(val component: Categories) : Child
     }
 
     enum class Tab(val title: String) {
         Notes("Notes"),
+        Categories("Categories")
     }
 }

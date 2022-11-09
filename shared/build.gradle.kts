@@ -9,6 +9,7 @@ plugins {
 kotlin {
     val sqlDelightVersion = "1.5.3"
     val decomposeVersion = "1.0.0-alpha-07"
+    val coroutinesVersion = "1.6.4"
 
     android()
     iosX64()
@@ -33,6 +34,7 @@ kotlin {
                 implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 api("com.arkivanov.decompose:decompose:$decomposeVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
         val commonTest by getting {

@@ -13,16 +13,23 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import kotlinx.coroutines.Dispatchers
 import uz.suhrob.notesapp.android.ui.pages.add_note.AddNotePage
 import uz.suhrob.notesapp.android.ui.pages.home.HomePage
 import uz.suhrob.notesapp.android.ui.theme.NotesAppTheme
+import uz.suhrob.notesapp.data.database.DatabaseDriverFactory
+import uz.suhrob.notesapp.di.NotesFactory
 import uz.suhrob.notesapp.presentation.root.Root
 import uz.suhrob.notesapp.presentation.root.RootComponent
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val rootComponent = RootComponent(defaultComponentContext())
+        val rootComponent = RootComponent(
+            defaultComponentContext(),
+            mainContext = Dispatchers.Main,
+            notesFactory = NotesFactory(DatabaseDriverFactory(applicationContext)),
+        )
         setContent {
             NotesAppTheme {
                 Surface(

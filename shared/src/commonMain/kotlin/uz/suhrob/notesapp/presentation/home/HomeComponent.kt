@@ -9,11 +9,17 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import uz.suhrob.notesapp.domain.model.Note
+import uz.suhrob.notesapp.domain.repository.NoteRepository
 import uz.suhrob.notesapp.presentation.categories.CategoriesComponent
 import uz.suhrob.notesapp.presentation.notes.NotesComponent
+import kotlin.coroutines.CoroutineContext
 
 class HomeComponent(
     componentContext: ComponentContext,
+    private val noteRepository: NoteRepository,
+    private val mainContext: CoroutineContext,
+    private val navigateToAddNotePage: (Note?) -> Unit,
 ) : Home, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
@@ -44,7 +50,14 @@ class HomeComponent(
 
     private fun child(config: Config, componentContext: ComponentContext): Home.Child {
         return when (config) {
-            Config.Notes -> Home.Child.NotesChild(NotesComponent())
+            Config.Notes -> Home.Child.NotesChild(
+                NotesComponent(
+                    componentContext,
+                    noteRepository = noteRepository,
+                    mainContext = mainContext,
+                    navigateToAddNotePage = navigateToAddNotePage,
+                )
+            )
             Config.Categories -> Home.Child.CategoriesChild(CategoriesComponent())
         }
     }

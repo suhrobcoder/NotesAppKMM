@@ -1,58 +1,57 @@
 package uz.suhrob.notesapp.android.ui.pages.notes
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import uz.suhrob.notesapp.android.ui.components.DateHeader
 import uz.suhrob.notesapp.android.ui.components.NoteCard
-import uz.suhrob.notesapp.domain.model.Category
-import uz.suhrob.notesapp.domain.model.Note
 import uz.suhrob.notesapp.presentation.notes.Notes
 import uz.suhrob.notesapp.util.parseColor
-import kotlin.random.Random
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NotesPage(
     component: Notes,
 ) {
-    val testNotes = List(20) {
-        Note(
-            id = 0,
-            title = "Title",
-            content = "Content",
-            date = Instant.fromEpochMilliseconds(
-                Clock.System.now().toEpochMilliseconds() - 86400 * 1000 * Random.nextLong(5)
-            ).toLocalDateTime(TimeZone.UTC),
-            category = Category(id = 0, title = "Category", color = "#4DF8B1")
-        )
-    }
-    val groupedNotes = testNotes.groupBy { it.date.dayOfMonth }
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp),
+    val state by component.state.subscribeAsState()
+    Box(
+        modifier = Modifier.fillMaxSize(),
     ) {
-        groupedNotes.forEach {
-            stickyHeader {
-                DateHeader(date = it.key.toString())
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+        ) {
+            state.notes.forEach {
+                item {
+                    DateHeader(date = it.key)
+                }
+                items(it.value) { note ->
+                    NoteCard(
+                        title = note.title,
+                        content = note.content,
+                        color = parseColor(note.category.color),
+                        category = note.category.title,
+                        onClick = { component.openNote(note) },
+                    )
+                }
             }
-            items(it.value) { note ->
-                NoteCard(
-                    title = note.title,
-                    content = note.content,
-                    color = parseColor(note.category.color),
-                    category = note.category.title,
-                    onClick = {},
-                )
-            }
+        }
+        FloatingActionButton(
+            onClick = component::newNote,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(20.dp),
+        ) {
+            Icon(imageVector = Icons.Rounded.Add, contentDescription = null)
         }
     }
 }

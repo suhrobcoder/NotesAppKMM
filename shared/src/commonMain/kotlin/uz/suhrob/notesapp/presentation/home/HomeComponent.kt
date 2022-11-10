@@ -58,7 +58,13 @@ class HomeComponent(
                     navigateToAddNotePage = navigateToAddNotePage,
                 )
             )
-            Config.Categories -> Home.Child.CategoriesChild(CategoriesComponent())
+            Config.Categories -> Home.Child.CategoriesChild(
+                CategoriesComponent(
+                    componentContext,
+                    noteRepository = noteRepository,
+                    mainContext = mainContext,
+                )
+            )
         }
     }
 

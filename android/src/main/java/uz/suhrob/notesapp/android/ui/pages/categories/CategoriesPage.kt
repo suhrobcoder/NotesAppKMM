@@ -9,19 +9,23 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
 import uz.suhrob.notesapp.android.ui.components.CategoryCard
-import uz.suhrob.notesapp.android.ui.theme.NotesAppTheme
-import uz.suhrob.notesapp.domain.model.Category
+import uz.suhrob.notesapp.presentation.categories.Categories
 import uz.suhrob.notesapp.util.parseColor
 
 @Composable
-fun CategoriesPage() {
-    val testCategories = List(10) {
-        Category(0, "Category $it", "#F43CD3")
+fun CategoriesPage(
+    component: Categories,
+) {
+    val state by component.state.subscribeAsState()
+    val dialog by component.dialog.subscribeAsState()
+    if (dialog.overlay != null) {
+        NewCategoryDialog(component = dialog.overlay!!.instance)
     }
     Box {
         LazyVerticalGrid(
@@ -31,7 +35,7 @@ fun CategoriesPage() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            items(testCategories) { category ->
+            items(state.categories) { category ->
                 CategoryCard(
                     title = category.title,
                     color = parseColor(category.color),
@@ -40,18 +44,12 @@ fun CategoriesPage() {
             }
         }
         FloatingActionButton(
-            onClick = {},
-            modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp),
+            onClick = component::showDialog,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(20.dp),
         ) {
             Icon(imageVector = Icons.Rounded.Add, contentDescription = null)
         }
-    }
-}
-
-@Preview
-@Composable
-fun CategoriesPage_Prev() {
-    NotesAppTheme {
-        CategoriesPage()
     }
 }

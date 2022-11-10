@@ -64,7 +64,7 @@ fun HomePage(
         ) {
             when (val child = it.instance) {
                 is Home.Child.NotesChild -> NotesPage(component = child.component)
-                is Home.Child.CategoriesChild -> CategoriesPage()
+                is Home.Child.CategoriesChild -> CategoriesPage(component = child.component)
             }
         }
     }

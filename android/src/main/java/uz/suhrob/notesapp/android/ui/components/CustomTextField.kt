@@ -39,7 +39,7 @@ fun CustomTextField(
                 interactionSource = interactionsSource,
                 singleLine = singLine,
                 colors = TextFieldDefaults.textFieldColors(
-                    containerColor = MaterialTheme.colorScheme.background,
+                    containerColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     errorIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,

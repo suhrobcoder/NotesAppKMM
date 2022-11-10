@@ -10,6 +10,7 @@ kotlin {
     val sqlDelightVersion = "1.5.3"
     val decomposeVersion = "1.0.0-alpha-07"
     val coroutinesVersion = "1.6.4"
+    val napierVersion = "2.6.1"
 
     android()
     iosX64()
@@ -35,6 +36,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 api("com.arkivanov.decompose:decompose:$decomposeVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                api("io.github.aakira:napier:$napierVersion")
             }
         }
         val commonTest by getting {

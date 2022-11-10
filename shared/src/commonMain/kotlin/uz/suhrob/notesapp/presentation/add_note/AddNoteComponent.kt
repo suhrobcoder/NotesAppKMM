@@ -64,8 +64,8 @@ class AddNoteComponent(
             return
         }
         val newNote = Note(
-            0,
-            state.title,
+            id = note?.id ?: 0,
+            title = state.title,
             content = state.content,
             date = state.date,
             category = state.category,

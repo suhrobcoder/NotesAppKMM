@@ -13,6 +13,8 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import uz.suhrob.notesapp.android.ui.pages.add_note.AddNotePage
 import uz.suhrob.notesapp.android.ui.pages.home.HomePage
@@ -23,12 +25,18 @@ import uz.suhrob.notesapp.presentation.root.Root
 import uz.suhrob.notesapp.presentation.root.RootComponent
 
 class MainActivity : ComponentActivity() {
+
+    private val notesFactory by lazy {
+        NotesFactory(DatabaseDriverFactory(applicationContext))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Napier.base(DebugAntilog())
         val rootComponent = RootComponent(
             defaultComponentContext(),
             mainContext = Dispatchers.Main,
-            notesFactory = NotesFactory(DatabaseDriverFactory(applicationContext)),
+            notesFactory = notesFactory,
         )
         setContent {
             NotesAppTheme {

@@ -11,5 +11,5 @@ fun LocalDate.format(): String {
     if (diff.days == 1) {
         return "Yesterday"
     }
-    return "${today.dayOfMonth}.${today.monthNumber}"
+    return "${dayOfMonth}.${monthNumber}"
 }

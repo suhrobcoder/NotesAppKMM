@@ -1,69 +1,49 @@
 package uz.suhrob.notesapp.android.ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowDropDown
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import uz.suhrob.notesapp.android.ui.theme.NotesAppTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> DropDownMenu(
     value: T?,
     options: List<T>,
     itemToText: (T) -> String,
-    label: String,
     onItemSelected: (T) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val interactionsSource: MutableInteractionSource = remember { MutableInteractionSource() }
-    val valueText = if (value != null) itemToText(value) else "Empty"
-    Box {
-        BasicTextField(
-            readOnly = true,
-            value = valueText,
-            onValueChange = { },
-            decorationBox = @Composable { innerTextField ->
-                TextFieldDefaults.TextFieldDecorationBox(
-                    value = valueText,
-                    visualTransformation = VisualTransformation.None,
-                    enabled = true,
-                    innerTextField = innerTextField,
-                    interactionSource = interactionsSource,
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                        disabledIndicatorColor = Color.Transparent,
-                        errorIndicatorColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                    ),
-                    contentPadding = PaddingValues(horizontal = 0.dp, vertical = 8.dp),
-                    label = { Text(label) },
-                    singleLine = true,
-                    trailingIcon = {
-                        IconButton(onClick = { expanded = !expanded }) {
-                            Icon(
-                                imageVector = Icons.Rounded.ArrowDropDown,
-                                contentDescription = null
-                            )
-                        }
-                    }
+    val valueText = if (value != null) itemToText(value) else ""
+    Box(
+        modifier = modifier,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                valueText,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f),
+            )
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = if (expanded) Icons.Rounded.KeyboardArrowUp
+                    else Icons.Rounded.KeyboardArrowDown,
+                    contentDescription = null
                 )
-            },
-            modifier = Modifier.fillMaxWidth(),
-        )
+            }
+        }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             options.forEach { option ->
                 DropdownMenuItem(
@@ -88,7 +68,6 @@ fun DropDownMenu_Preview() {
             value = value,
             options = items,
             itemToText = { it },
-            label = "",
             onItemSelected = { value = it },
         )
     }

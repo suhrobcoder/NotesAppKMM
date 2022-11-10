@@ -29,6 +29,7 @@ fun NotesPage(
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(horizontal = 16.dp),
+            modifier = Modifier.fillMaxSize(),
         ) {
             state.notes.forEach {
                 item {

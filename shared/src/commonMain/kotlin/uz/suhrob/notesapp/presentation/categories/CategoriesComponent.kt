@@ -10,6 +10,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import uz.suhrob.notesapp.domain.model.Category
 import uz.suhrob.notesapp.domain.repository.NoteRepository
 import uz.suhrob.notesapp.presentation.categories.new_category.NewCategory
 import uz.suhrob.notesapp.presentation.categories.new_category.NewCategoryComponent
@@ -30,9 +31,10 @@ class CategoriesComponent(
     private val _dialog = childOverlay(
         source = dialogNavigation,
         handleBackButton = true,
-    ) { _, componentContext ->
+    ) { config, componentContext ->
         NewCategoryComponent(
             componentContext,
+            config.category,
             noteRepository = noteRepository,
             onDismissed = dialogNavigation::dismiss,
         )
@@ -49,10 +51,10 @@ class CategoriesComponent(
         }
     }
 
-    override fun showDialog() {
-        dialogNavigation.activate(NewCategoryConfig)
+    override fun showDialog(category: Category?) {
+        dialogNavigation.activate(NewCategoryConfig(category))
     }
 
     @Parcelize
-    private object NewCategoryConfig : Parcelable
+    private class NewCategoryConfig(val category: Category?) : Parcelable
 }

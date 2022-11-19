@@ -39,7 +39,9 @@ fun CategoriesPage(
                 CategoryCard(
                     title = category.title,
                     color = parseColor(category.color),
-                    onClick = {},
+                    onClick = {
+                        component.showDialog(category)
+                    },
                 )
             }
         }

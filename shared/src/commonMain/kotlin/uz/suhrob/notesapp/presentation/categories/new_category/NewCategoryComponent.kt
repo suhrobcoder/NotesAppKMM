@@ -9,11 +9,17 @@ import uz.suhrob.notesapp.domain.repository.NoteRepository
 
 class NewCategoryComponent(
     componentContext: ComponentContext,
+    private val category: Category?,
     private val noteRepository: NoteRepository,
     private val onDismissed: () -> Unit,
 ) : NewCategory, ComponentContext by componentContext {
 
-    private val _state = MutableValue(NewCategory.NewCategoryState())
+    private val _state = MutableValue(
+        NewCategory.NewCategoryState(
+            title = category?.title ?: "",
+            color = category?.color ?: "",
+        )
+    )
     override val state: Value<NewCategory.NewCategoryState> = _state
 
     override fun onDismissClicked() {
@@ -22,13 +28,16 @@ class NewCategoryComponent(
 
     override fun onSubmitted() {
         val state = state.value
-        noteRepository.addCategory(
-            Category(
-                id = 0L,
-                title = state.title,
-                color = state.color,
-            )
+        val newCategory = Category(
+            id = category?.id ?: 0L,
+            title = state.title,
+            color = state.color,
         )
+        if (category == null) {
+            noteRepository.addCategory(newCategory)
+        } else {
+            noteRepository.updateCategory(newCategory)
+        }
         onDismissed()
     }
 

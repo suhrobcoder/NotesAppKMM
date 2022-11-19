@@ -28,12 +28,12 @@ fun NewCategoryDialog(
     AlertDialog(
         onDismissRequest = component::onDismissClicked,
         confirmButton = {
-            Button(onClick = component::onSubmitted) {
+            TextButton(onClick = component::onSubmitted) {
                 Text("Save")
             }
         },
         dismissButton = {
-            OutlinedButton(onClick = component::onDismissClicked) {
+            TextButton(onClick = component::onDismissClicked) {
                 Text("Cancel")
             }
         },

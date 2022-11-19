@@ -10,7 +10,7 @@ interface Categories {
     val state: Value<CategoriesState>
     val dialog: Value<ChildOverlay<*, NewCategory>>
 
-    fun showDialog()
+    fun showDialog(category: Category? = null)
 
     data class CategoriesState(
         val categories: List<Category> = listOf(),

@@ -5,16 +5,14 @@ import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import uz.suhrob.notesapp.di.NotesFactory
+import uz.suhrob.notesapp.di.AppComponent
+import uz.suhrob.notesapp.di.NotesComponent
 import uz.suhrob.notesapp.domain.model.Note
 import uz.suhrob.notesapp.presentation.add_note.AddNoteComponent
 import uz.suhrob.notesapp.presentation.home.HomeComponent
-import kotlin.coroutines.CoroutineContext
 
 class RootComponent(
     componentContext: ComponentContext,
-    private val mainContext: CoroutineContext,
-    private val notesFactory: NotesFactory,
 ) : Root, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
@@ -31,17 +29,19 @@ class RootComponent(
         return when (config) {
             Config.Home -> Root.Child.HomeChild(
                 HomeComponent(componentContext,
-                    mainContext = mainContext,
-                    noteRepository = notesFactory.createNoteRepository(),
+                    mainContext = AppComponent.mainContext,
+                    noteRepository = NotesComponent.noteRepository,
                     navigateToAddNotePage = { navigation.push(Config.AddNote(it)) }),
             )
-            is Config.AddNote -> Root.Child.AddNoteChild(AddNoteComponent(
-                componentContext,
-                note = config.note,
-                noteRepository = notesFactory.createNoteRepository(),
-                mainContext = mainContext,
-                navigateBack = navigation::pop,
-            ))
+            is Config.AddNote -> Root.Child.AddNoteChild(
+                AddNoteComponent(
+                    componentContext,
+                    note = config.note,
+                    noteRepository = NotesComponent.noteRepository,
+                    mainContext = AppComponent.mainContext,
+                    navigateBack = navigation::pop,
+                )
+            )
         }
     }
 

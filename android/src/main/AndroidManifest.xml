@@ -3,7 +3,8 @@
 
     <application
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".NotesApplication">
         <activity
             android:name=".MainActivity"
             android:exported="true"

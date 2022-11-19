@@ -51,4 +51,7 @@ dependencies {
 
     val decomposeVersion = "1.0.0-alpha-07"
     implementation("com.arkivanov.decompose:extensions-compose-jetpack:$decomposeVersion")
+
+    val koinVersion = "3.2.0"
+    implementation("io.insert-koin:koin-android:$koinVersion")
 }

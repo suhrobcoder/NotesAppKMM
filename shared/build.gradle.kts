@@ -11,6 +11,7 @@ kotlin {
     val decomposeVersion = "1.0.0-alpha-07"
     val coroutinesVersion = "1.6.4"
     val napierVersion = "2.6.1"
+    val koinVersion = "3.2.0"
 
     android()
     iosX64()
@@ -37,6 +38,7 @@ kotlin {
                 api("com.arkivanov.decompose:decompose:$decomposeVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 api("io.github.aakira:napier:$napierVersion")
+                implementation("io.insert-koin:koin-core:$koinVersion")
             }
         }
         val commonTest by getting {

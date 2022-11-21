@@ -26,6 +26,10 @@ fun AddNotePage(
     component: AddNote,
 ) {
     val state by component.state.subscribeAsState()
+    val dialog by component.dialog.subscribeAsState()
+    if (dialog.overlay != null) {
+        ConfirmDialog(component = dialog.overlay!!.instance)
+    }
     Scaffold(
         topBar = {
             TopAppBar(

@@ -1,9 +1,13 @@
 package uz.suhrob.notesapp.presentation.add_note
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.overlay.*
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.reduce
+import com.arkivanov.essenty.backhandler.BackCallback
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -12,6 +16,8 @@ import kotlinx.datetime.toLocalDateTime
 import uz.suhrob.notesapp.domain.model.Category
 import uz.suhrob.notesapp.domain.model.Note
 import uz.suhrob.notesapp.domain.repository.NoteRepository
+import uz.suhrob.notesapp.presentation.add_note.confirm_dialog.ConfirmDialog
+import uz.suhrob.notesapp.presentation.add_note.confirm_dialog.ConfirmDialogComponent
 import uz.suhrob.notesapp.util.coroutineScope
 import kotlin.coroutines.CoroutineContext
 
@@ -35,15 +41,38 @@ class AddNoteComponent(
 
     private val scope = coroutineScope(mainContext)
 
+    private val dialogNavigation = OverlayNavigation<ConfirmDialogConfig>()
+
+    private val _dialog = childOverlay(
+        source = dialogNavigation,
+        handleBackButton = true,
+    ) { _, componentContext ->
+        ConfirmDialogComponent(
+            componentContext,
+            onCancel = dialogNavigation::dismiss,
+            onDiscard = navigateBack,
+        )
+    }
+    override val dialog: Value<ChildOverlay<*, ConfirmDialog>> = _dialog
+
+    private val backCallback = BackCallback {
+        if (isNoteChanged()) {
+            dialogNavigation.activate(ConfirmDialogConfig)
+        } else {
+            navigateBack()
+        }
+    }
+
     init {
         scope.launch {
             val categories = noteRepository.getCategories().first()
             _state.reduce { it.copy(categories = categories) }
         }
+        backHandler.register(backCallback)
     }
 
     override fun navigateBack() {
-        navigateBack.invoke()
+        backCallback.onBack()
     }
 
     override fun categorySelect(category: Category) {
@@ -77,4 +106,20 @@ class AddNoteComponent(
         }
         navigateBack()
     }
+
+    private fun isNoteChanged(): Boolean {
+        val state = state.value
+        if (note == null && (state.title.isNotEmpty() || state.content.isNotEmpty())) {
+            return true
+        }
+        if (note != null) {
+            if (note.title != state.title || note.content != state.content || note.category != state.category) {
+                return true
+            }
+        }
+        return false
+    }
+
+    @Parcelize
+    private object ConfirmDialogConfig : Parcelable
 }

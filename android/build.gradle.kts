@@ -46,10 +46,10 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.0")
+    implementation("androidx.compose.material3:material3:1.0.1")
     implementation("androidx.activity:activity-compose:1.6.1")
 
-    val decomposeVersion = "1.0.0-alpha-07"
+    val decomposeVersion = "1.0.0-beta-01"
     implementation("com.arkivanov.decompose:extensions-compose-jetpack:$decomposeVersion")
 
     val koinVersion = "3.2.0"

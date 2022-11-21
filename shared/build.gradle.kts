@@ -8,7 +8,7 @@ plugins {
 
 kotlin {
     val sqlDelightVersion = "1.5.3"
-    val decomposeVersion = "1.0.0-alpha-07"
+    val decomposeVersion = "1.0.0-beta-01"
     val coroutinesVersion = "1.6.4"
     val napierVersion = "2.6.1"
     val koinVersion = "3.2.0"

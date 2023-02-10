@@ -9,11 +9,13 @@ import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.subscribeAsState
+import kotlinx.coroutines.launch
 import uz.suhrob.notesapp.android.ui.components.CustomTextField
 import uz.suhrob.notesapp.android.ui.components.DropDownMenu
 import uz.suhrob.notesapp.presentation.add_note.AddNote
@@ -30,6 +32,13 @@ fun AddNotePage(
     if (dialog.overlay != null) {
         ConfirmDialog(component = dialog.overlay!!.instance)
     }
+    val snackbarHostState = SnackbarHostState()
+    val coroutineScope = rememberCoroutineScope()
+    state.event?.getDataIfNotHandled()?.let { message ->
+        coroutineScope.launch {
+            snackbarHostState.showSnackbar(message = message)
+        }
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -37,7 +46,7 @@ fun AddNotePage(
                     Text(text = "New note")
                 },
                 navigationIcon = {
-                    IconButton(onClick = component::navigateBack) {
+                    IconButton(onClick = component::navigateBackClick) {
                         Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
                     }
                 }
@@ -47,7 +56,10 @@ fun AddNotePage(
             FloatingActionButton(onClick = component::save) {
                 Icon(imageVector = Icons.Rounded.Edit, contentDescription = null)
             }
-        }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
     ) { paddingValues ->
         Column(
             modifier = Modifier

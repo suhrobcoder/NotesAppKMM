@@ -36,7 +36,7 @@ fun <T> DropDownMenu(
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.weight(1f),
             )
-            IconButton(onClick = {}) {
+            IconButton(onClick = { expanded = !expanded }) {
                 Icon(
                     imageVector = if (expanded) Icons.Rounded.KeyboardArrowUp
                     else Icons.Rounded.KeyboardArrowDown,

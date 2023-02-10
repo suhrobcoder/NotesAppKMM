@@ -5,6 +5,7 @@ import com.arkivanov.decompose.value.Value
 import kotlinx.datetime.LocalDateTime
 import uz.suhrob.notesapp.domain.model.Category
 import uz.suhrob.notesapp.presentation.add_note.confirm_dialog.ConfirmDialog
+import uz.suhrob.notesapp.util.Event
 
 interface AddNote {
 
@@ -12,7 +13,7 @@ interface AddNote {
 
     val dialog: Value<ChildOverlay<*, ConfirmDialog>>
 
-    fun navigateBack()
+    fun navigateBackClick()
 
     fun categorySelect(category: Category)
 
@@ -28,5 +29,6 @@ interface AddNote {
         val date: LocalDateTime,
         val category: Category? = null,
         val categories: List<Category> = listOf(),
+        val event: Event<String>? = null,
     )
 }

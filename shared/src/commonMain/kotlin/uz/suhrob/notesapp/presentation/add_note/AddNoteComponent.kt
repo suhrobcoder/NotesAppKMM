@@ -18,6 +18,7 @@ import uz.suhrob.notesapp.domain.model.Note
 import uz.suhrob.notesapp.domain.repository.NoteRepository
 import uz.suhrob.notesapp.presentation.add_note.confirm_dialog.ConfirmDialog
 import uz.suhrob.notesapp.presentation.add_note.confirm_dialog.ConfirmDialogComponent
+import uz.suhrob.notesapp.util.Event
 import uz.suhrob.notesapp.util.coroutineScope
 import kotlin.coroutines.CoroutineContext
 
@@ -66,12 +67,12 @@ class AddNoteComponent(
     init {
         scope.launch {
             val categories = noteRepository.getCategories().first()
-            _state.reduce { it.copy(categories = categories) }
+            _state.reduce { it.copy(categories = categories, category = categories.first()) }
         }
         backHandler.register(backCallback)
     }
 
-    override fun navigateBack() {
+    override fun navigateBackClick() {
         backCallback.onBack()
     }
 
@@ -90,6 +91,11 @@ class AddNoteComponent(
     override fun save() {
         val state = state.value
         if (state.category == null) {
+            _state.reduce { it.copy(event = Event("You should select category")) }
+            return
+        }
+        if (state.title.isEmpty()) {
+            _state.reduce { it.copy(event = Event("Title can't be empty")) }
             return
         }
         val newNote = Note(
